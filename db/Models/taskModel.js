@@ -1,23 +1,32 @@
 //Wassim s'Task
 const mongoose = require('mongoose');
 
-//This is an Example of Model List (change List to Your Table name )!
+// This is an Example of Model List (change List to Your Table name )!
 
-// const ListSchema = new mongoose.Schema({
-//     title: {
-//         type: String,
-//         required: true,
-//         minlength: 1,
-//         trim: true
-//     },
-//     // with auth
-//     _userId: {
-//         type: mongoose.Types.ObjectId,
-//         required: true
-//     }
+const TaskSchema = new mongoose.Schema({
 
-// })
+    userId:{
 
-// const List = mongoose.model('List', ListSchema);
+        type: mongoose.Types.ObjectId,
+        required:true
+    },
 
-// module.exports = { List }
+    // with auth
+    completed: {
+        type: Boolean,
+        required: false
+    },
+    name:{
+        type:String,
+        require:true
+    },
+    date:{
+        type:Date,
+        required:false
+    }
+
+})
+
+const Task = mongoose.model('Task', TaskSchema);
+
+module.exports = { Task }
