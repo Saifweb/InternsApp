@@ -1,7 +1,7 @@
 //Wassim s'Task
 const mongoose = require('mongoose');
 
-// This is an Example of Model List (change List to Your Table name )!
+// This is an Example of Model List (change List to Your Table name )! !!
 
 const TaskSchema = new mongoose.Schema({
 
@@ -22,7 +22,6 @@ const TaskSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: false
-        
     }
 
 })
