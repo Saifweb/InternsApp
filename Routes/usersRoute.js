@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Create, Index, Update, Delete } = require('../Controllers/cvsControllers');
+const { Create, Index, Update, Delete } = require('../Controllers/usersControllers');
 
 //Example of route
 

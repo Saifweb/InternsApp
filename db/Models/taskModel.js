@@ -5,10 +5,9 @@ const mongoose = require('mongoose');
 
 const TaskSchema = new mongoose.Schema({
 
-    userId:{
-
+    userId: {
         type: mongoose.Types.ObjectId,
-        required:true
+        required: true
     },
 
     // with auth
@@ -16,13 +15,13 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
-    name:{
-        type:String,
-        require:true
+    name: {
+        type: String,
+        require: true
     },
-    date:{
-        type:Date,
-        required:false
+    date: {
+        type: Date,
+        required: false
     }
 
 })
