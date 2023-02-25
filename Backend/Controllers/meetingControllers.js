@@ -2,14 +2,15 @@ const { Meeting } = require('../db/Models/meetingsModel')
 
 const Create = async (req, res) => {
     if (req.user.role == "supervisor" || req.user.role == "admin") {
-        let newTask = new Meeting({
+        let newMetting = new Meeting({
             admin_supervisorId: req.user.id,
             internId: req.body.internId,
-            meetingDate: req.body.meetingDate,
+            meetingDateStart: req.body.meetingDateStart,
+            meetingDateEnd: req.body.meetingDateEnd,
             subject: req.body.subject
         });
-        newTask.save().then((task) => {
-            res.send(task)
+        newMetting.save().then((newMetting) => {
+            return res.send(newMetting)
         })
     }
     else {

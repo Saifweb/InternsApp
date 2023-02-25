@@ -14,7 +14,11 @@ const MeetingSchema = new mongoose.Schema({
         required: true,
         ref: "user"
     },
-    meetingDate: {
+    meetingDateStart: {
+        type: Date,
+        required: true,
+    },
+    meetingDateEnd: {
         type: Date,
         required: true,
     },

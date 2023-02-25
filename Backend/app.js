@@ -24,11 +24,15 @@ const userRoutes = require('./Routes/usersRoute');
 const cvRoutes = require('./Routes/cvsRoutes');
 const taskRoutes = require('./Routes/tasksRoute');
 const authRoutes = require('./Routes/authRoute');
+const meetingRoutes = require('./Routes/meetingRoute');
+
 
 app.use('/api', userRoutes.routes);
 app.use('/api', cvRoutes.routes);
 app.use('/api', taskRoutes.routes);
 app.use('/api', authRoutes.routes);
+app.use('/api', meetingRoutes.routes);
+
 
 
 

@@ -58,18 +58,17 @@ const Update = async (req, res) => {
 
     if (req.user.role == "supervisor") {
         Task.findByIdAndUpdate(req.params.id, req.body).then((task) => {
-            res.status(200).json(task);
+            return res.status(200).json(task);
         });
     }
     else if (req.user.role == "intern") {
         Task.findOne({ _id: req.params.id, userId: req.user.id }).then(task => {
             task.completed = req.body.completed;
             task.save().then(savedTask => {
-                res.status(200).json(savedTask);
-            }).catch(err => res.status(400).json({ error: err }));
+                return res.status(200).json(savedTask);
+            }).catch(err => { return res.status(400).json({ error: err }) });
         });
     }
-
     else {
         res.status(400).json('unAutherized')
     }
@@ -101,5 +100,5 @@ const getAllUsers = (req, res) => {
 
 
 module.exports = {
-    Create, Delete, Index, Update,getAllUsers
+    Create, Delete, Index, Update, getAllUsers
 }
