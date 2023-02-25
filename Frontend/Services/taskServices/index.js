@@ -93,6 +93,51 @@ export const updateTask = async (taskId, progress) => {
       return false;
     }
   };
+
+
+  export const updateTask1 = async (taskId, updatedTask) => {
+    const link = Api + "/updateTask/" + taskId
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${Accesstoken}`
+    },
+    
+    body: JSON.stringify({updatedTask})
+
+    });
+    const data = await response.json();
+    console.log(data)
+    if (response.status === 200) {
+      return data;
+    } else {
+      return false;
+    }
+  };
+
+  export async function getInterns() {
+    const link = Api + "/" + "supervisorInterns"
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+        method: 'Get',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Accesstoken}`
+        },
+
+    });
+    const interns = await response.json();
+    console.log(interns)
+    if (response.status == "200") {
+        return interns
+    }
+    else {
+        return false
+    }
+};
+
  
   
   

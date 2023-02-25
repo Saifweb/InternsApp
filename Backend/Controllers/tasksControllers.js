@@ -54,7 +54,7 @@ const Index = async (req, res) => {
         });
     }
 }
-const Update = async (req, res) => {
+ const Update = async (req, res) => {
 
     if (req.user.role == "supervisor") {
         Task.findByIdAndUpdate(req.params.id, req.body).then((task) => {
@@ -62,7 +62,8 @@ const Update = async (req, res) => {
         });
     }
     else if (req.user.role == "intern") {
-        Task.findOne({ _id: req.params.id, userId: req.user.id }).then(task => {
+        Task.findOne({ _id: req.params.id, userId: req.user.id },{ $set: { name: req.body.name, userId: req.body.userId, date: req.body.date } },
+            { new: true }).then(task => {
             task.completed = req.body.completed;
             task.save().then(savedTask => {
                 return res.status(200).json(savedTask);
@@ -86,11 +87,16 @@ const Delete = async (req, res) => {
     }
 }
 
-const getAllUsers = (req, res) => {
-    if (req.user) {
-        User.find()
-            .then(users => res.json(users))
+const getInterns = async (req, res) => {
+    if (req.user.role == "supervisor") {
+        User.find({ supervisor_id: req.user.id })
+            .then(users => res.status(200).json(users))
             .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
+    }
+    else if (req.user.role == "admin") {
+        User.find({ role: "intern" })
+            .then(users => { return res.status(200).json(users) })
+            .catch(err => { return res.status(400).json("Unable") })
     }
     else {
         res.status(400).json('unAutherized')
@@ -98,7 +104,6 @@ const getAllUsers = (req, res) => {
 }
 
 
-
 module.exports = {
-    Create, Delete, Index, Update, getAllUsers
+    Create, Delete, Index, Update, getInterns
 }
