@@ -162,6 +162,7 @@ import { Dialog } from 'primereact/dialog';
 //import { getAllResume } from '../../../Services/resumeservice/index.js';
 import { getAllUsers } from '../../../Services/userServices';
 
+import { InputText } from 'primereact/inputtext';
 
 
 const UsersPage = () => {
@@ -170,6 +171,16 @@ const UsersPage = () => {
     const [positions, setPositions] = useState([]);
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [globalFilter, setGlobalFilter] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+
+    
+
+    const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+    const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
 
 useEffect(() => {
     getAllUsers()
@@ -229,9 +240,6 @@ useEffect(() => {
         );
     };
     
-    const dateFilterTemplate = (options) => {
-        return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-    };
 
 
     const statusBodyTemplate = (rowData) => {
@@ -256,12 +264,11 @@ useEffect(() => {
     const verifiedFilterTemplate = (options) => {
         return <TriStateCheckbox value={options.preSelection} onChange={(e) => options.filterCallback(e.value)} />;
     };
-    function downloadBodyTemplate(rowData) {
-        return (
-            <Button icon="pi pi-file-pdf" onClick={() => downloadFile(rowData.resume)} />
-        );
 
-    };
+    const nameFilter = (value, filter) => {
+        return value.toLowerCase().includes(filter.toLowerCase());
+      };
+    
 
 
 
@@ -269,12 +276,22 @@ useEffect(() => {
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Filter Menu</h5>
+                    <h5>Users Menu</h5>
+                    <div className="p-grid p-justify-center p-align-center">
+                    <div className="p-col-12 p-md-6">
+                    <div className="p-inputgroup">
+                        <span className="p-inputgroup-addon">
+                            <i className="pi pi-search"></i>
+                        </span>
+                        <InputText type="text" value={searchQuery} onChange={handleSearchInputChange} placeholder="Search by name" />
+                    </div>
+                    </div>
+                    </div>
                     {isLoading ? (
                         <p>Loading...</p>   
                     ) : (
                     <DataTable
-                        value={users}
+                        value={filteredUsers}
                         paginator
                         className="p-datatable-gridlines"
                         showGridlines
@@ -284,12 +301,18 @@ useEffect(() => {
                         responsiveLayout="scroll"
                         emptyMessage="No users found."
 
+                        globalFilter={globalFilter}
+                        onGlobalFilterChange={(e) => setGlobalFilter(e.target.value)}
+                        filterBy={[{ field: 'Name', filterFunction: nameFilter }]}
+
+
+
                     >
 
                         <Column header="Email" filterField="Email" style={{ minWidth: '10rem' }} body={EmailBodyTemplate} />
                         <Column field="Name" header="Name" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={NameBodyTemplate} />
-                        <Column header="Role" filterField="date" style={{ minWidth: '8rem' }} body={RoleBodyTemplate} />
-                        <Column field="Block" header="Block" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={BlockBodyTemplate} />
+                        <Column header="Role" filterField="date" style={{ minWidth: '8rem' }} body={RoleBodyTemplate} sortable/>
+                        <Column field="Block" header="Block" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={BlockBodyTemplate} sortable/>
                     </DataTable>
                     )}
                 </div>
