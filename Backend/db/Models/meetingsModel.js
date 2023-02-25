@@ -14,20 +14,20 @@ const MeetingSchema = new mongoose.Schema({
         required: true,
         ref: "user"
     },
-    meetingDateStart: {
+    start: {
         type: Date,
         required: true,
     },
-    meetingDateEnd: {
+    end: {
         type: Date,
         required: true,
     },
-    subject: {
+    title: {
         type: String,
         required: true,
     }
 })
 
-const Meeting = mongoose.model('Metting', MeetingSchema);
+const Meeting = mongoose.model('Meeting', MeetingSchema);
 
 module.exports = { Meeting }

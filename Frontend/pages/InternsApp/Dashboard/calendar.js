@@ -3,25 +3,36 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-
-
+import { getMeetings } from '../../../Services/meetingServices';
 
 const CalendarPage = () => {
-    const [events, setEvents] = useState([]);
-
+    const [meetings, setEvents] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedDates, setSelectedDates] = useState([]);
+    function handleEventClick(info) {
+        setSelectedEvent(info.event);
+        console.log(info.event)
+    }
     useEffect(() => {
-        // Fetch events from API or database
-        const fetchedEvents = [
-            { title: 'Meeting', start: '2023-02-27T14:30:00', end: '2023-02-27T16:30:00' },
-            { title: 'Party', start: '2023-03-04T20:00:00', end: '2023-03-05T02:00:00' },
-        ];
+        const fetchTasks = async () => {
+            const tasksData = await getMeetings();
+            if (tasksData != false) {
+                setEvents(tasksData);
+                console.log(tasksData)
+            }
+        }
+        fetchTasks();
 
-        setEvents(fetchedEvents);
     }, []);
 
     return (
         <div>
-            <FullCalendar initialView="dayGridMonth" plugins={[dayGridPlugin, timeGridPlugin, listPlugin]} events={events} />
+            <FullCalendar
+                initialView="dayGridMonth"
+                plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+                events={meetings}
+                eventClick={handleEventClick}
+            />
         </div>
     );
 };

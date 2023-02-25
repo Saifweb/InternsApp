@@ -5,9 +5,9 @@ const Create = async (req, res) => {
         let newMetting = new Meeting({
             admin_supervisorId: req.user.id,
             internId: req.body.internId,
-            meetingDateStart: req.body.meetingDateStart,
-            meetingDateEnd: req.body.meetingDateEnd,
-            subject: req.body.subject
+            start: req.body.start,
+            end: req.body.end,
+            title: req.body.title
         });
         newMetting.save().then((newMetting) => {
             return res.send(newMetting)
@@ -53,8 +53,9 @@ const DeleteMeeting = async (req, res) => {
 const updateMeeting = (req, res) => {
     Meeting.findOne({ _id: req.params.meeting_id }).then(async meeting => {
         if (meeting) {
-            meeting.meetingDate = req.body.meetingDate
-            meeting.subject = req.body.subject,
+            meeting.start = req.body.start
+            meeting.end = req.body.end
+            meeting.title = req.body.title,
                 user.save().then(res.status(200).json(user)).catch(err => res.status(400).json({ error: err }));
         }
         else {
