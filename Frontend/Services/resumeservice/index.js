@@ -14,7 +14,7 @@ export const getAllResume = async () => {
     const data = await response.json();
     console.log(data)
     if (response.status == "200") {
-        return true
+        return data
     }
     else {
         return false

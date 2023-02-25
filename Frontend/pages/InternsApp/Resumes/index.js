@@ -6,7 +6,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
-// import { CustomerService } from '../../../demo/service/CustomerService';
 import { Dialog } from 'primereact/dialog';
 import { getAllResume } from '../../../Services/resumeservice/index.js';
 
@@ -14,8 +13,6 @@ import { getAllResume } from '../../../Services/resumeservice/index.js';
 
 
 const ResumesPage = () => {
-    // const [customers1, setCustomers1] = useState(null);
-    // const [loading1, setLoading1] = useState(true);
     const [positions, setPositions] = useState([]);
     const [resumes, setResumes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -30,24 +27,6 @@ const ResumesPage = () => {
     }
 
     
-
-
-    // const customerService = new CustomerService();
-
-//     useEffect(() => {
-//         // updated to use InternService
-//        getInterns().then((data) => setDataViewValue(data)); // updated to use getInterns method
-//        setGlobalFilterValue('');
-//    }, []);
-//     useEffect(() => {
-//         customerService.getCustomersLarge().then((data) => {
-//             setCustomers1(getCustomers(data));
-//             setLoading1(false);
-//         });
-
-
-//     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 useEffect(() => {
     getAllResume()
       .then((data) => {
@@ -67,19 +46,6 @@ useEffect(() => {
         const positions = resumes.length > 0 ? resumes.map((resume) => resume.status) : [];
         setPositions(positions);
       }, [resumes]);
-
-    // const getCustomers = (data) => {
-    //     return [...(data || [])].map((d) => {
-    //         d.date = new Date(d.date);
-    //         return d;
-    //     });
-    // };
-    const getResumes = (data) => {
-        return [...(data || [])].map((d) => {
-          d.dateOfInterview = new Date(d.dateOfInterview);
-          return d;
-        });
-      };
 
     const formatDate = (value) => {
         return value.toLocaleDateString('en-US', {
