@@ -70,13 +70,31 @@ export const deleteTask = async (taskId) => {
     }
 };
 
-export const getAllUsers = (req, res) => {
-    if (req.user) {
-        User.find()
-            .then(users => res.json(users))
-            .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
+
+export const updateTask = async (taskId, progress) => {
+    const link = Api + "/task/" + taskId;
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${Accesstoken}`
+    },
+    
+    body: JSON.stringify({
+        "completed": progress })
+
+    });
+    const data = await response.json();
+    console.log(data)
+    if (response.status === 200) {
+      return data;
+    } else {
+      return false;
     }
-    else {
-        res.status(400).json('unAutherized')
-    }
-}
+  };
+ 
+  
+  
+  
+  

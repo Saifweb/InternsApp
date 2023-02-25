@@ -20,12 +20,16 @@ import { InputText } from 'primereact/inputtext';
 
 import { getTasks } from '../../../Services/taskServices/index';
 import { deleteTask } from '../../../Services/taskServices/index';
+import { updateTask } from '../../../Services/taskServices/index';
 import { getUsers } from '../../../Services/userServices/index';
 
 
 
 
 const TaskPage = () => {
+    const [sliderValue, setSliderValue] = useState('');
+
+
     const [customers1, setCustomers1] = useState(null);
     const [customers2, setCustomers2] = useState([]);
     const [customers3, setCustomers3] = useState([]);
@@ -110,7 +114,7 @@ const TaskPage = () => {
 //     useEffect(() => {
 //         // updated to use TaskServices
 //        getTasks().then((data) => setDataViewValue(data)); // updated to use getTasks method
-//        print(dataViewValue);
+//        console.log(dataViewValue);
 //    }, []);
 
 
@@ -248,8 +252,24 @@ const TaskPage = () => {
     };
 
     const activityBodyTemplate = (rowData) => {
-        return <ProgressBar value={rowData.activity} showValue={false} style={{ height: '.5rem' }}></ProgressBar>;
-    };
+        const [sliderValue, setSliderValue] = useState(rowData.completed);
+      
+        const handleSliderChange = async (e) => {
+          try {
+            const updatedTask = await updateTask(rowData._id, e.value);
+            setSliderValue(updatedTask.completed);
+          } catch (error) {
+            console.error(error);
+            // Handle error
+          }
+        };
+      
+        return (<div>      
+
+          <Slider value={sliderValue} onChange={handleSliderChange} /></div>,
+      
+        );
+      };
 
     const activityFilterTemplate = (options) => {
         return (
@@ -421,15 +441,7 @@ const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
 
 
-  useEffect(() => {
-    async function fetchTasks() {
-        const tasksData = await getTasks();
-      
-      setTasks(tasksData);
 
-    }
-    fetchTasks();
-  }, []);
 
   useEffect(async () => {
     const fetchTasks = async () => {
@@ -445,6 +457,8 @@ const TaskPage = () => {
     }
     fetchTasks();
 }, [isUpdated]);
+
+
 
   const deleteBodyTemplate = (rowData) => {
     return (
@@ -485,7 +499,9 @@ const TaskPage = () => {
             <Column header="Interns" field="userId"   filterField="name" showFilterMatchModes={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '14rem' }} />
 
             <Column field="date" header="Deadline" filterField="date" filter filterType="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} />
-            <Column field="activity" header="Progress" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate}  />
+
+            <Column field="completed" header="Progress" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
+
             <Column field="verified" header="delete" dataType="boolean" body={deleteBodyTemplate} bodyClassName="text-center" style={{ minWidth: '8rem' }} />
 
           </DataTable>
