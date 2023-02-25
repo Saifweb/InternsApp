@@ -7,7 +7,7 @@ const Create = async (req, res) => {
             userId: req.body.userId,
             name: req.body.name,
             date: req.body.date,
-            completed: req.body.completed || "0%"
+            completed: req.body.completed || "0"
         });
         newTask.save().then((task) => {
             res.send(task)
@@ -54,7 +54,7 @@ const Index = async (req, res) => {
         });
     }
 }
- const Update = async (req, res) => {
+const Update = async (req, res) => {
 
     if (req.user.role == "supervisor") {
         Task.findByIdAndUpdate(req.params.id, req.body).then((task) => {
@@ -62,13 +62,13 @@ const Index = async (req, res) => {
         });
     }
     else if (req.user.role == "intern") {
-        Task.findOne({ _id: req.params.id, userId: req.user.id },{ $set: { name: req.body.name, userId: req.body.userId, date: req.body.date } },
+        Task.findOne({ _id: req.params.id, userId: req.user.id }, { $set: { name: req.body.name, userId: req.body.userId, date: req.body.date } },
             { new: true }).then(task => {
-            task.completed = req.body.completed;
-            task.save().then(savedTask => {
-                return res.status(200).json(savedTask);
-            }).catch(err => { return res.status(400).json({ error: err }) });
-        });
+                task.completed = req.body.completed;
+                task.save().then(savedTask => {
+                    return res.status(200).json(savedTask);
+                }).catch(err => { return res.status(400).json({ error: err }) });
+            });
     }
     else {
         res.status(400).json('unAutherized')
