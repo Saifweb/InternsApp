@@ -264,10 +264,8 @@ const TaskPage = () => {
           }
         };
       
-        return (<div>      
-
-          <Slider value={sliderValue} onChange={handleSliderChange} /></div>,
-      
+        return (
+          <Slider value={sliderValue} onChange={handleSliderChange} />
         );
       };
 
