@@ -12,6 +12,13 @@
     },
     "dependencies": {
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "@fullcalendar/common": "^5.11.4",
+        "@fullcalendar/core": "^6.1.4",
+        "@fullcalendar/daygrid": "^6.1.4",
+        "@fullcalendar/interaction": "^6.1.4",
+        "@fullcalendar/list": "^6.1.4",
+        "@fullcalendar/react": "^6.1.4",
+        "@fullcalendar/timegrid": "^6.1.4",
         "chart.js": "^3.9.1",
         "next": "^12.3.4",
         "primeflex": "^3.2.1",
