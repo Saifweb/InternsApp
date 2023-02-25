@@ -24,6 +24,9 @@ const ProfilPage = () => {
     const [isUpdated, setIsUpdated] = useState(false);
     //we will use this variables to know the number of tasks 
     const [TaskData, setTaskData] = useState('');
+    //show piechart only for intern :
+    const [intern, setIntern] = useState(false);
+
 
     // const [TaskCompleted, setTaskCompleted] = useState('');
     // const [TaskNotCompleted, setTaskNotCompleted] = useState('');
@@ -34,10 +37,10 @@ const ProfilPage = () => {
 
 
 
-   
 
 
-       
+
+
 
 
     const toast = useRef();
@@ -103,66 +106,61 @@ const ProfilPage = () => {
                 const data = await response.json();
                 console.log(data);
                 setUser(data);
+                if (data.role == "intern") {
+                    setIntern(true)
+                    console.log("aaaaaaaa")
+                }
                 setIsUpdated(isUpdated = await false);
             }
         }
         GetMyProfil();
     }, [isUpdated]);
 
-      useEffect(async() => {
-        const fetchTaskData  = async () => {
-            
+
+    useEffect(() => {
+        const fetchTaskData = async () => {
             try {
-              const  TaskData = await getTaskData();
-            //   const TaskCompleted=taskData.completedTasks;
-            //   const TaskNotCompleted=taskData.totalTasks-taskData.completedTasks;
-  
-            //   setTaskNotCompleted(TaskNotCompleted);
-            //   setTaskCompleted(TaskCompleted);
-            console.log(TaskData);
-
-            setTaskData(TaskData)
-  
+                const TaskData = await getTaskData();
+                setTaskData(TaskData);
+                fixchart(TaskData);
             } catch (error) {
-              console.error(error);
+                console.error(error);
             }
-          }
-      
-          fetchTaskData();
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-      
-        const pieData =  {
-            labels: ['In Progress', 'Completed'],
-            datasets: [
-                {
-                    data: [TaskData.totalTasks-TaskData.completedTasks,TaskData.completedTasks],
-                    backgroundColor: [documentStyle.getPropertyValue('--indigo-500'), documentStyle.getPropertyValue('--teal-500')],
-                    hoverBackgroundColor: [documentStyle.getPropertyValue('--indigo-400'), documentStyle.getPropertyValue('--teal-400')]
-                }
-            ]
         };
+        fetchTaskData();
 
-        const pieOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
+        const fixchart = (TaskData) => {
+            console.log(TaskData);
+            const documentStyle = getComputedStyle(document.documentElement);
+            const textColor = documentStyle.getPropertyValue('--text-color');
+            const Data = {
+                labels: ['In Progress', 'Completed'],
+                datasets: [
+                    {
+                        data: [TaskData.totalTasks - TaskData.completedTasks, TaskData.completedTasks],
+                        backgroundColor: [documentStyle.getPropertyValue('--indigo-500'), documentStyle.getPropertyValue('--teal-500')],
+                        hoverBackgroundColor: [documentStyle.getPropertyValue('--indigo-400'), documentStyle.getPropertyValue('--teal-400')]
+                    }
+                ]
+            };
+
+            const pieOptions = {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            color: textColor
+                        }
                     }
                 }
-            }
+            };
+            setOptions({
+                pieOptions
+            });
+            setPieData(Data);
         };
+    }, []);
 
-       
-
-        setOptions({
-            pieOptions,
-           
-        });
-        setPieData(pieData);
-        ;
-    } , []);
     return (
         <div className="grid">
             <div className="col-12 md:col-6">
@@ -214,12 +212,15 @@ const ProfilPage = () => {
                         <p className="text-900 font-medium">{user.role}</p>
                     </div>
                 </div>
-                <div className="col-12 xl:col-6">
-                <div className="card flex flex-column align-items-center">
-                    <h5 className="text-left w-full">Pie Chart</h5>
-                    <Chart type="pie" data={pieData} options={options.pieOptions}></Chart>
-                </div>
-               </div>
+                {intern &&
+                    <div className="col-12 xl:col-12">
+                        <div className="card flex flex-column align-items-center">
+                            <h5 className="text-center w-full">My Tasks</h5>
+                            <Chart type="pie" data={pieData} options={options.pieOptions}></Chart>
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
     );
