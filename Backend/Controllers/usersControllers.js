@@ -46,7 +46,7 @@ const getTaskNumbers = async (req, res) => {
 
             for (const task of tasks) {
                 totalTasks++;
-                if (task.completed === "100%") {
+                if (task.completed === "100") {
                     completedTasks++;
                 }
             }

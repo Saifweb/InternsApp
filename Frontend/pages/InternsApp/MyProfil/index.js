@@ -23,10 +23,14 @@ const ProfilPage = () => {
     // we will use this variable whenever the update methode is work we will activate the getmethode again(look at useEffect)
     const [isUpdated, setIsUpdated] = useState(false);
     //we will use this variables to know the number of tasks 
-    const [taskData, setTaskData] = useState('');
+    const [TaskData, setTaskData] = useState('');
+
+    // const [TaskCompleted, setTaskCompleted] = useState('');
+    // const [TaskNotCompleted, setTaskNotCompleted] = useState('');
+
     const [options, setOptions] = useState({});
-    const { layoutConfig } = useContext(LayoutContext);
     const [pieData, setPieData] = useState({});
+    const { layoutConfig } = useContext(LayoutContext);
 
 
 
@@ -104,30 +108,35 @@ const ProfilPage = () => {
         }
         GetMyProfil();
     }, [isUpdated]);
-    useEffect(() => {
-        async function fetchTaskData() {
-          try {
-            const  taskData = await getTaskData();
-            setTaskData(taskData);
-          } catch (error) {
-            console.error(error);
+
+      useEffect(async() => {
+        const fetchTaskData  = async () => {
+            
+            try {
+              const  TaskData = await getTaskData();
+            //   const TaskCompleted=taskData.completedTasks;
+            //   const TaskNotCompleted=taskData.totalTasks-taskData.completedTasks;
+  
+            //   setTaskNotCompleted(TaskNotCompleted);
+            //   setTaskCompleted(TaskCompleted);
+            console.log(TaskData);
+
+            setTaskData(TaskData)
+  
+            } catch (error) {
+              console.error(error);
+            }
           }
-        }
-    
-        fetchTaskData();
-        
-        ;
-      }, []);
-      useEffect(() => {
+      
+          fetchTaskData();
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-       
       
-        const pieData = {
+        const pieData =  {
             labels: ['In Progress', 'Completed'],
             datasets: [
                 {
-                    data: [taskData.totalTasks,taskData.completedTasks],
+                    data: [TaskData.totalTasks-TaskData.completedTasks,TaskData.completedTasks],
                     backgroundColor: [documentStyle.getPropertyValue('--indigo-500'), documentStyle.getPropertyValue('--teal-500')],
                     hoverBackgroundColor: [documentStyle.getPropertyValue('--indigo-400'), documentStyle.getPropertyValue('--teal-400')]
                 }
@@ -153,7 +162,7 @@ const ProfilPage = () => {
         });
         setPieData(pieData);
         ;
-    }, [layoutConfig]);
+    } , []);
     return (
         <div className="grid">
             <div className="col-12 md:col-6">
@@ -206,10 +215,10 @@ const ProfilPage = () => {
                     </div>
                 </div>
                 <div className="col-12 xl:col-6">
-                    <div className="card flex flex-column align-items-center">
-                        <h5 className="text-left w-full">Pie Chart</h5>
-                        <Chart type="pie" data={pieData} options={options.pieOptions}></Chart>
-                    </div>
+                <div className="card flex flex-column align-items-center">
+                    <h5 className="text-left w-full">Pie Chart</h5>
+                    <Chart type="pie" data={pieData} options={options.pieOptions}></Chart>
+                </div>
                </div>
             </div>
         </div>
