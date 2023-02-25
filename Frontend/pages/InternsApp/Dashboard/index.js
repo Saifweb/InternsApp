@@ -291,7 +291,8 @@ const Dashboard = () => {
                     </ul>
                 </div>
             </div>
-
+            <div>
+            </div>
             <div className="col-12 xl:col-6">
                 <div className="card">
                     <h5>Sales Overview</h5>
