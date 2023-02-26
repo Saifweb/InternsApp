@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, getAllUsers,getInterns,getTaskNumbers, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword } = require('../Controllers/usersControllers');
+const { createUser,getUsersNumber, getAllUsers,getInterns,getTaskNumbers, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword } = require('../Controllers/usersControllers');
 const { authenticateToken } = require('../middlewares/auth');
 
 //Example of route
@@ -13,6 +13,7 @@ router.post('/user', authenticateToken, createUser),
     router.get('/users', authenticateToken, getAllUsers),
     router.get('/supervisorInterns', authenticateToken, getInterns),
     router.get('/NumberOfTasks', authenticateToken, getTaskNumbers),
+    router.get('/NumberOfusers', authenticateToken, getUsersNumber),
 
     //router.get('/users/:id', authenticateToken, getUserById),
     router.patch('/user', authenticateToken, updateUser),

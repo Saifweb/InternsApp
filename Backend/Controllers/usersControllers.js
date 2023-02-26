@@ -67,7 +67,29 @@ const getTaskNumbers = async (req, res) => {
         res.status(401).json({ error: "Unauthorized" });
     }
 };
-
+const getUsersNumber = (req, res) => {
+    if (req.user) {
+        User.aggregate([
+            {
+                $group: {
+                    _id: "$role",
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+        .then(results => {
+            const userCountByRole = {};
+            results.forEach(result => {
+                userCountByRole[result._id] = result.count;
+            });
+            res.json(userCountByRole);
+        })
+        .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
+    }
+    else {
+        res.status(400).json('unAuthorized')
+    }
+}
 // Retrieve all users
 const getAllUsers = (req, res) => {
     if (req.user) {
@@ -183,5 +205,5 @@ const ConnectedUser = (req, res) => {
 
 }
 module.exports = {
-    createUser, getTaskNumbers, getAllUsers, getInterns, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword
+    createUser,getUsersNumber, getTaskNumbers, getAllUsers, getInterns, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword
 }

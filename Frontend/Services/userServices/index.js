@@ -109,3 +109,22 @@ export const getAllUsers = async () => {
     }
 };
 
+export const getUsersNumber = async () => {
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const link = Api + "/" + "NumberOfusers"
+    const response = await fetch(link, {
+        method: 'Get',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Accesstoken}`
+        },
+    });
+    const users = await response.json();
+    // console.log(users)
+    if (response.status == "200") {
+        return users
+    }
+    else {
+        return false
+    }
+};
