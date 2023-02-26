@@ -259,7 +259,7 @@ const TaskPage = () => {
       
         const handleSliderChange = async (e) => {
           try {
-            const updatedTask = await updateTask(rowData._id, e.value);
+            const updatedTask = await updateTask(rowData_id, e.value);
             setSliderValue(updatedTask.completed);
           } catch (error) {
             console.error(error);

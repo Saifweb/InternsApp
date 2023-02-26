@@ -13,7 +13,7 @@ export const getAllResume = async () => {
     });
     const data = await response.json();
     console.log(data)
-    if (response.status == "200") {
+    if (response.status == 200) {
         return data
     }
     else {
@@ -39,8 +39,32 @@ export const createResume = async (email, position, resume) => {
     });
     const data = await response.json();
     console.log(data)
-    if (response.status == "200") {
+    if (response.status == 200) {
         return true
+    }
+    else {
+        return false
+    }
+};
+
+export const updateResume = async (dateOfInterview) => {
+    const link = Api + "/" + "resume"
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Accesstoken}`
+
+        },
+        body: JSON.stringify({
+            "dateOfInterview":dateOfInterview,
+        }),
+    });
+    const data = await response.json();
+    console.log(data)
+    if (response.status == 200) {
+        return data
     }
     else {
         return false

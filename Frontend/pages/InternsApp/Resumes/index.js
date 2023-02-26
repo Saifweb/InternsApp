@@ -6,8 +6,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
-import { Dialog } from 'primereact/dialog';
 import { getAllResume } from '../../../Services/resumeservice/index.js';
+import { updateResume } from '../../../Services/resumeservice/index.js';
+import { downloadAllResumeAsCSV } from '../../../Services/resumeservice/index.js';
 
 
 
@@ -73,56 +74,113 @@ useEffect(() => {
         const [selectedDate, setSelectedDate] = useState(null);
         const [showPopup, setShowPopup] = useState(false);
         const [scheduledDate, setScheduledDate] = useState(null);
-      
-        const scheduleDate = () => {
-          // Save the selected date and hide the dialog
-          setSelectedDate(selectedDate);
-          setShowDialog(false);
-        };
+        
+        
+        const handleScheduleCancel = () => {
+            
+            setShowPopup(false);
+          };
+        // const scheduleDate = () => {
+        //   // Save the selected date and hide the dialog
+        //   setSelectedDate(selectedDate);
+        //   setShowDialog(false);
+        // };
         const handleScheduleClick = () => {
             setShowPopup(true);
           };
           const handleDateSelect = (e) => {
             setScheduledDate(e.value);
-            setShowPopup(false);
-          }
+
+          };
+          const handleScheduleSave = async () => {
+            try {
+            //   const success = await updateResume(rowData._id, scheduledDate);
+            //   if (success) {
+            //     // Update the date of interview in rowData if update is successful
+            //     rowData.dateOfInterview = scheduledDate;
+            //   }
+            updateResume(rowData._id, scheduledDate);
+            console.log("hello")
+              setShowPopup(false);
+            } catch (error) {
+              console.error(error);
+              // Handle error
+            }
+          };
       
-        if (rowData.preselection) {
-          // If the row is verified
-          if (rowData.dateOfInterview == null) {
+        // if (rowData.preselection) {
+        //   // If the row is verified
+        //   if (rowData.dateOfInterview == null) {
+        //         <div>
+        //             <Button label="Schedule" onClick={handleScheduleClick} />
+        //             {showPopup && (
+        //             <div className="p-fluid">
+        //                 <Calendar
+        //                 value={scheduledDate}
+        //                 onChange={handleDateSelect}
+        //                 showIcon
+        //                 inputClassName="w-full"
+        //                 dateFormat="mm/dd/yy"
+        //                 placeholder="MM/DD/YYYY"
+        //                 monthNavigator
+        //                 yearNavigator
+        //                 yearRange="2020:2030"
+        //                 />
+        //             </div>
+        //             )}
+        //         </div>
+        //   } else {
+        //     // If the date is scheduled, show the date
+        //     return formatDate(rowData.dateOfInterview);
+        //   }
+        // } else {
+        //   // If the row is not verified
+        //   return "Not Eligible";
+        // }
+      
+        // return (
+        //   <Dialog header="Schedule Date" visible={showDialog} onHide={() => setShowDialog(false)}>
+        //     <Calendar value={selectedDate} onChange={(e) => setSelectedDate(e.value)} />
+        //     <Button label="Schedule" onClick={scheduleDate} />
+        //   </Dialog>
+        // );
+        const schedulePopup = (
+            <div className="p-fluid">
+              <Calendar
+                value={scheduledDate}
+                onChange={handleDateSelect}
+                showIcon
+                inputClassName="w-full"
+                dateFormat="mm/dd/yy"
+                placeholder="MM/DD/YYYY"
+                monthNavigator
+                yearNavigator
+                yearRange="2020:2030"
+              />
+              <div className="mt-4 flex justify-end">
+                <Button label="Cancel" onClick={handleScheduleCancel} className="mr-4" />
+                <Button label="Save" onClick={handleScheduleSave} />
+              </div>
+            </div>
+          );
+          
+          if (rowData.preselection) {
+            // If the row is verified
+            if (rowData.dateOfInterview == null) {
+              return (
                 <div>
-                    <Button label="Schedule" onClick={handleScheduleClick} />
-                    {showPopup && (
-                    <div className="p-fluid">
-                        <Calendar
-                        value={scheduledDate}
-                        onChange={handleDateSelect}
-                        showIcon
-                        inputClassName="w-full"
-                        dateFormat="mm/dd/yy"
-                        placeholder="MM/DD/YYYY"
-                        monthNavigator
-                        yearNavigator
-                        yearRange="2020:2030"
-                        />
-                    </div>
-                    )}
+                  <Button label="Schedule" onClick={handleScheduleClick} />
+                  {showPopup && schedulePopup}
                 </div>
+              );
+            } else {
+              // If the date is scheduled, show the date
+              return formatDate(rowData.dateOfInterview);
+            }
           } else {
-            // If the date is scheduled, show the date
-            return formatDate(rowData.dateOfInterview);
+            // If the row is not verified
+            return "Not Eligible";
           }
-        } else {
-          // If the row is not verified
-          return "Not Eligible";
-        }
-      
-        return (
-          <Dialog header="Schedule Date" visible={showDialog} onHide={() => setShowDialog(false)}>
-            <Calendar value={selectedDate} onChange={(e) => setSelectedDate(e.value)} />
-            <Button label="Schedule" onClick={scheduleDate} />
-          </Dialog>
-        );
       };
 
     const dateFilterTemplate = (options) => {
@@ -188,6 +246,7 @@ useEffect(() => {
                         <Column field="Pre-Selection" header="Pre-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
                         <Column field="Final-Selection" header="Final-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={FinalverifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
                         <Column field="Resume" header="Resume" bodyClassName="text-center" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={downloadBodyTemplate} />
+                        
                     </DataTable>
                     )}
                 </div>
@@ -201,3 +260,18 @@ useEffect(() => {
 };
 
 export default ResumesPage;
+
+
+
+export const downloadResumeData = async () => {
+    const resumes = await getAllResume();
+    const jsonData = JSON.stringify(resumes);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'resumes.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
