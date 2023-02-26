@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import { DeleteMeeting, getMeetings, updateMeeting } from '../../../Services/meetingServices';
+import { createMeeting, DeleteMeeting, getMeetings, updateMeeting } from '../../../Services/meetingServices';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { getInterns } from '../../../Services/internServices/index.';
+import { Toast } from 'primereact/toast';
 
 const CalendarPage = () => {
     const [meetings, setMeetings] = useState([]);
@@ -25,9 +26,18 @@ const CalendarPage = () => {
     const [intern, setIntern] = useState(null);
     const [title, setTitle] = useState(null);
     const [end, setEnd] = useState(null);
-
+    const toast = useRef();
+    //if its update it will show this toast 
+    const showSuccess = () => {
+        toast.current.show({ severity: 'success', summary: 'Success', detail: 'Updated Successfully', life: 3000 });
+    };
+    //error server it will show this toast 
+    const showError = () => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error,try again', life: 3000 });
+    };
 
     function handleEventClick(info) {
+        console.log(info.event.end)
         const meeting = {
             "start": info.event.start,
             "end": info.event.end,
@@ -49,13 +59,36 @@ const CalendarPage = () => {
             if (success) {
                 setDisplayBasic(false)
                 setIsUpdated(true);
+                showSuccess()
+
             }
             else {
+                showError()
+
             }
             // Do something with the response data
         } catch (error) {
             console.error(error);
             // Handle errors
+        }
+    }
+    async function CreateMeet(event) {
+        event.preventDefault();
+
+        try {
+            const succes = await createMeeting(title, selectedStart, end, intern)
+            if (succes) {
+                showSuccess()
+                setDisplayDiao(false)
+                setIsUpdated(true)
+
+            }
+            else {
+                showError()
+            }
+        }
+        catch (error) {
+            console.log(error)
         }
     }
 
@@ -66,8 +99,10 @@ const CalendarPage = () => {
                 console.log("?")
                 setDisplayBasic(false)
                 setIsUpdated(true);
+                showSuccess()
             }
             else {
+                showError()
             }
             // Do something with the response data
         } catch (error) {
@@ -99,7 +134,6 @@ const CalendarPage = () => {
                 setInterns(InternsData);
             }
             else {
-                console.log("eeee????")
             }
         }
         fetchInterns();
@@ -108,6 +142,7 @@ const CalendarPage = () => {
 
     return (
         <div>
+            <Toast ref={toast} />
             <FullCalendar
                 initialView="dayGridMonth"
                 plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
@@ -177,10 +212,10 @@ const CalendarPage = () => {
             {/* Create Dialog! */}
             <Dialog header="Fix Meeting" visible={displayDioa} style={{ width: '30vw' }} modal onHide={() => setDisplayDiao(false)}>
                 <div className="card p-fluid">
-                    {selectedStart && <div><form >
+                    {selectedStart && <div><form onSubmit={CreateMeet} >
                         <div className="field">
-                            <label htmlFor="name1">Title</label>
-                            <InputText id="name1" type="text" value={title} onChange={(e) => setTitle(e.value)}
+                            <label htmlFor="title">Title</label>
+                            <InputText id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}
                             />
                         </div>
                         <div className="field">

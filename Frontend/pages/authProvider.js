@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (router.pathname != '/auth/login' && router.pathname != '/') {
+        if (router.pathname != '/auth/login' && router.pathname != '/' && router.pathname != "/auth/forgetPassword") {
             const AccessToken = window.localStorage.getItem('AccessToken');
             if (AccessToken) {
                 // Authenticate the user using the token
