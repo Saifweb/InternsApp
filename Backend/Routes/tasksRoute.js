@@ -12,7 +12,7 @@ router.get('/tasks', authenticateToken, Index),
     router.post('/task', authenticateToken, Create),
     router.patch('/task/:id', authenticateToken, Update),
     router.get('/users', authenticateToken, getInterns),
-    router.patch('/updateTask/:id', authenticateToken, Update);
+    // router.patch('/updateTask/:id', authenticateToken, Update);
 
     
 

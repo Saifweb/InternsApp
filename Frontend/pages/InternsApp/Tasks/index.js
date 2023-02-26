@@ -51,19 +51,6 @@ const TaskPage = () => {
     const [allExpanded, setAllExpanded] = useState(false);
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
 
-    const representatives = [
-        { name: 'Amy Elsner', image: 'amyelsner.png' },
-        { name: 'Anna Fali', image: 'annafali.png' },
-        { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-        { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-        { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-        { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-        { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-        { name: 'Onyama Limba', image: 'onyamalimba.png' },
-        { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-        { name: 'XuXue Feng', image: 'xuxuefeng.png' }
-    ];
-
     const statuses = ['unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'];
 
     const customerService = new CustomerService();
@@ -93,34 +80,6 @@ const TaskPage = () => {
             </div>
         );
     };
-
-    // useEffect(() => {
-    //     setLoading2(true);
-
-    //     customerService.getCustomersLarge().then((data) => {
-    //         setCustomers1(getCustomers(data));
-    //         setLoading1(false);
-    //     });
-    //     customerService.getCustomersLarge().then((data) => {
-    //         setCustomers2(getCustomers(data));
-    //         setLoading2(false);
-    //     });
-    //     customerService.getCustomersMedium().then((data) => setCustomers3(data));
-    //     productService.getProductsWithOrdersSmall().then((data) => setProducts(data));
-
-    //     initFilters1();
-    // }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-
-
-
-//     useEffect(() => {
-//         // updated to use TaskServices
-//        getTasks().then((data) => setDataViewValue(data)); // updated to use getTasks method
-//        console.log(dataViewValue);
-//    }, []);
-
-
 
 
 
@@ -201,23 +160,9 @@ const TaskPage = () => {
         );
     };
 
-    const representativeFilterTemplate = (options) => {
-        return (
-            <>
-                <div className="mb-3 text-bold">Agent Picker</div>
-                <MultiSelect value={options.value} options={representatives} itemTemplate={representativesItemTemplate} onChange={(e) => options.filterCallback(e.value)} optionLabel="name" placeholder="Any" className="p-column-filter" />
-            </>
-        );
-    };
 
-    const representativesItemTemplate = (option) => {
-        return (
-            <div className="p-multiselect-representative-option">
-                <img alt={option.name} src={`${contextPath}/demo/images/avatar/${option.image}`} width={32} style={{ verticalAlign: 'middle' }} />
-                <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{option.name}</span>
-            </div>
-        );
-    };
+
+
 
     const dateBodyTemplate = (rowData) => {
 
@@ -393,50 +338,7 @@ const TaskPage = () => {
     const header1 = renderHeader1();
 
 
-            
-
-
-    // return (
-    //     <div className="grid">
-    //         <div className="col-12">
-    //             <div className="card">
-    //                 <h5>Filter Menu</h5>
-    //                 <DataTable
-    //                     value={filteredValue ||dataViewValue}
-    //                     paginator
-    //                     className="p-datatable-gridlines"
-    //                     showGridlines
-    //                     rows={10}
-    //                     dataKey="id"
-    //                     filters={filters1}
-    //                     filterDisplay="menu"
-    //                     responsiveLayout="scroll"
-    //                     emptyMessage="No customers found."
-    //                     header={header1}
-    //                 >
-    //                     <Column value={dataViewValue} field="name" header="Task's name" filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-    //                     <Column
-
-
-    //                         header="Interns"
-    //                         filterField="representative"
-    //                         showFilterMatchModes={false}
-    //                         filterMenuStyle={{ width: '14rem' }}
-    //                         style={{ minWidth: '14rem' }}
-    //                         body={representativeBodyTemplate}
-    //                         filter
-    //                         filterElement={representativeFilterTemplate}
-    //                     />
-    //                     <Column header="Deadline" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-    //                     <Column field="activity" header="Progress" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
-    //                     <Column field="verified" header="delete" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
-    //                 </DataTable>
-    //             </div>
-    //         </div>  
-    //     </div>
-    // );
-
-
+    
 
 
   const [tasks, setTasks] = useState([]);
@@ -444,27 +346,60 @@ const TaskPage = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [updateDialogVisible, setUpdateDialogVisible] = useState(false);
 
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response1 = await getTasks();
+        setTasks(response1);
+        if(response1.status == "200"){
+            setUpdateDialogVisible(updateDialogVisible = await false);
+
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [updateDialogVisible]);
+
+
+//   useEffect(async () => {
+//     const fetchTasks = async () => {
+//         const tasksData = await getTasks();
+//         const internData = await getInterns();
+//         setTasks(tasksData);
+//         setUsers(internData);
+        
+
+//         if (tasksData.status == "200") {
+//             const data = await tasksData.json();
+//             const data1 = await internData.json();            
+//             setIsUpdated(isUpdated = await false);
+//         }
+//     }
+//     fetchTasks();
+// }, [isUpdated]);
+
+
   const handleUpdateTask = async (updatedTask) => {
     try {
-      const response = await updateTask1("63f963b50adf4561dda50234",updatedTask);
+      const response = await updateTask1(updatedTask._id,updatedTask);
       if (response.status === 200) {
         const updatedTaskData = await response.json();
-        const updatedTasks = tasks.map((task) =>
-          task._id === updatedTaskData._id ? updatedTaskData : task
-        );
-        setTasks(updatedTasks);
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.map((task) =>
+              task._id === updatedTaskData._id ? updatedTaskData : task
+            );
+            return updatedTasks;
+          });
+
         setIsUpdated(true);
         setUpdateDialogVisible(false);
-      } else {
-        // handle error case
-        console.error('Error updating task');
-      }
+    } 
     } catch (error) {
       console.error(error);
     }
   };
-
-
 
 
   useEffect(async () => {
@@ -477,14 +412,14 @@ const TaskPage = () => {
 
         if (tasksData.status == "200") {
             const data = await tasksData.json();
-            const data1 = await internData.json();
-            console.log(data1);
-            
+            const data1 = await internData.json();            
             setIsUpdated(isUpdated = await false);
         }
     }
     fetchTasks();
 }, [isUpdated]);
+
+
 
 
 
@@ -522,6 +457,7 @@ const TaskPage = () => {
         className="p-button-primary"
         onClick={() => {
           handleUpdateTask(selectedTask);
+          setUpdateDialogVisible(false);
         }}
       />
     </>
@@ -638,30 +574,5 @@ const TaskPage = () => {
 };
 export default TaskPage;
 
-
-
-
-// const itemTemplate = (data, layout) => {
-//     if (!data) {
-//         return;
-//     }
-
-//     if (layout === 'list') {
-//         return dataviewListItem(data);
-//     } else if (layout === 'grid') {
-//         return dataviewGridItem(data);
-//     }
-// };
-
-// return (
-//     <div className="grid list-demo">
-//         <div className="col-12">
-//             <div className="card">
-//                 <DataView value={filteredValue || dataViewValue} layout={layout} paginator rows={9} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate} header={dataViewHeader}></DataView>
-//             </div>
-//         </div>
-      
-//     </div>
-// );
 
 

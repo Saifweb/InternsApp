@@ -96,7 +96,7 @@ export const updateTask = async (taskId, progress) => {
 
 
   export const updateTask1 = async (taskId, updatedTask) => {
-    const link = Api + "/updateTask/" + taskId
+    const link = Api + "/task/" + taskId
     const Accesstoken = localStorage.getItem('AccessToken')
     const response = await fetch(link, {
       method: "PATCH",
@@ -104,8 +104,12 @@ export const updateTask = async (taskId, progress) => {
         "Content-Type": "application/json",
         'Authorization': `Bearer ${Accesstoken}`
     },
-    
-    body: JSON.stringify({updatedTask})
+    body: JSON.stringify({
+        "name": updatedTask.name,
+        "date": updatedTask.date,
+        "userId": updatedTask.userId,
+        "completed": updatedTask.completed
+    })
 
     });
     const data = await response.json();
