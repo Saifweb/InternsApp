@@ -16,11 +16,13 @@ const InternsPage = () => {
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
     const [displayBasic, setDisplayBasic] = useState(false);
+    const [displayBasic1, setDisplayBasic1] = useState(false);
+
 
     const [dataViewValue, setDataViewValue] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filteredValue, setFilteredValue] = useState(null);
-    const [layout, setLayout] = useState('grid');
+    const [layout, setLayout] = useState('list');
     const [sortKey, setSortKey] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [sortField, setSortField] = useState(null);
@@ -85,8 +87,31 @@ const InternsPage = () => {
         </div>
     );
 
+    const addSupervisor = (data) => {
+
+        setDisplayBasic1(false)
+
+    }
+
+const [supervisorOptions, setSupervisorOptions] = useState([]);
+
+
+// Define options for supervisors dropdown
+const supervisorList = [
+  { label: 'zied', value: 'zied' },
+  { label: 'Seifeddine ben hamida', value: 'Seifeddine ben hamida' },
+  { label: 'si akrem', value: 'si akrem' }
+];
+const [selectedSupervisor, setSelectedSupervisor] = useState(null);
+
+// Function to handle selecting a supervisor from dropdown
+const handleSupervisorChange = (e) => {
+  setSelectedSupervisor(e.value);
+};
     const dataviewListItem = (data) => {
         const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
+        
+        const basicDialogFooter1 = <Button type="button" label="ADD" onClick={() => addSupervisor(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
 
@@ -98,7 +123,8 @@ const InternsPage = () => {
                         <div className="mb-2" label='InternEmail'>{data.email}</div>
 
                     </div>
-                    <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                    {/* add task */}
+                    <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
                         <div className="flex align-items-center justify-content-between">
 
                             <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
@@ -121,6 +147,33 @@ const InternsPage = () => {
                             </div>
                         </div>
                     </div>
+                    {/* add supervisor */}
+                    <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                        <div className="flex align-items-center justify-content-between">
+
+                            <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
+                                <div className="card p-fluid">
+                                    {/* <div className="field">
+                                        <label htmlFor="name">Supervisor's name</label>
+                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="deadline">Supervisor's email</label>
+                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
+                                    </div> */}
+                                    <div className="field">
+                                    <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                    <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
+                                    </div>
+                                </div>
+                            </Dialog>
+                            <div className="grid">
+                                <div className="col-12">
+                                    <Button type="button" label="Add Supervisor" icon="pi pi-plus" onClick={() => setDisplayBasic1(true)} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -128,6 +181,7 @@ const InternsPage = () => {
 
     const dataviewGridItem = (data) => {
         const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
+        const basicDialogFooter1 = <Button type="button" label="ADD" onClick={() => addSupervisor(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
             <div className="col-12 lg:col-4">
@@ -138,24 +192,54 @@ const InternsPage = () => {
                         <div className="text-2xl font-bold" label='NameOfIntern'>{data.name}</div>
                         <div className="mb-3" label='EmailOfIntern'>{data.email}</div>
                     </div>
-                    <div className="flex align-items-center justify-content-between">
+                    {/* add task */}
+                    <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
+                        <div className="flex align-items-center justify-content-between">
 
-                        <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
-                            <div className="card p-fluid">
-                                <div className="field">
-                                    <label htmlFor="name">Task's name</label>
-                                    <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
-                                </div>
-                                <div className="field">
-                                    <label htmlFor="deadline">Deadline</label>
-                                    <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
-                                </div>
+                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
+                                <div className="card p-fluid">
+                                    <div className="field">
+                                        <label htmlFor="name">Task's name</label>
+                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="deadline">Deadline</label>
+                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
+                                    </div>
 
+                                </div>
+                            </Dialog>
+                            <div className="grid">
+                                <div className="col-12">
+                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => setDisplayBasic(true)} />
+                                </div>
                             </div>
-                        </Dialog>
-                        <div className="grid">
-                            <div className="col-12">
-                                <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => setDisplayBasic(true)} />
+                        </div>
+                    </div>
+                    {/* add supervisor */}
+                    <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                        <div className="flex align-items-center justify-content-between">
+
+                            <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
+                                <div className="card p-fluid">
+                                    {/* <div className="field">
+                                        <label htmlFor="name">Supervisor's name</label>
+                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="deadline">Supervisor's email</label>
+                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
+                                    </div> */}
+                                    <div className="field">
+                                    <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                    <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
+                                    </div>
+                                </div>
+                            </Dialog>
+                            <div className="grid">
+                                <div className="col-12">
+                                    <Button type="button" label="Add Supervisor" icon="pi pi-plus" onClick={() => setDisplayBasic1(true)} />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -285,6 +285,8 @@ useEffect(() => {
                         </span>
                         <InputText type="text" value={searchQuery} onChange={handleSearchInputChange} placeholder="Search by name" />
                     </div>
+                    <hr />
+
                     </div>
                     </div>
                     {isLoading ? (
