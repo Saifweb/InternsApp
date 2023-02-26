@@ -47,18 +47,18 @@ export const createResume = async (email, position, resume) => {
     }
 };
 
-export const updateResume = async (dateOfInterview) => {
-    const link = Api + "/" + "resume"
+export const updateResume = async (id, dateOfInterview) => {
+    const link = Api + "/" + "resume/" + id
     const Accesstoken = localStorage.getItem('AccessToken')
     const response = await fetch(link, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${Accesstoken}`
 
         },
         body: JSON.stringify({
-            "dateOfInterview":dateOfInterview,
+            "dateOfInterview": dateOfInterview,
         }),
     });
     const data = await response.json();

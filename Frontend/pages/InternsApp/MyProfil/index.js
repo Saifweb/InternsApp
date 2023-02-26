@@ -106,6 +106,8 @@ const ProfilPage = () => {
                 const data = await response.json();
                 console.log(data);
                 setUser(data);
+                setEmail(data.email)
+                setName(data.name)
                 if (data.role == "intern") {
                     setIntern(true)
                 }
