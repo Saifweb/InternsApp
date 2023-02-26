@@ -18,12 +18,13 @@ const ResumesPage = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     function downloadFile(resume) {
-        const link = document.createElement('a');
-        link.href = resume;
-        link.setAttribute('download', '');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // const link = document.createElement('a');
+        // link.href = resume;
+        // link.setAttribute('download', '');
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+        window.open(resume, '_blank');
     }
 
     
@@ -48,7 +49,11 @@ useEffect(() => {
       }, [resumes]);
 
     const formatDate = (value) => {
-        return value.toLocaleDateString('en-US', {
+        // if (!value) {
+        //     return 'Not Scheduled'; // return empty string if value is undefined
+        // }
+        const dateObject = new Date(value);
+        return dateObject.toLocaleDateString('en-US', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
@@ -66,16 +71,25 @@ useEffect(() => {
     const dateBodyTemplate = (rowData) =>{
         const [showDialog, setShowDialog] = useState(false);
         const [selectedDate, setSelectedDate] = useState(null);
+        const [showPopup, setShowPopup] = useState(false);
+        const [scheduledDate, setScheduledDate] = useState(null);
       
         const scheduleDate = () => {
           // Save the selected date and hide the dialog
           setSelectedDate(selectedDate);
           setShowDialog(false);
         };
+        const handleScheduleClick = () => {
+            setShowPopup(true);
+          };
+          const handleDateSelect = (e) => {
+            setScheduledDate(e.value);
+            setShowPopup(false);
+          }
       
         if (rowData.preselection) {
           // If the row is verified
-          if (rowData.dateOfInterview === 'not scheduled') {
+          if (rowData.dateOfInterview == null) {
                 <div>
                     <Button label="Schedule" onClick={handleScheduleClick} />
                     {showPopup && (
@@ -130,7 +144,7 @@ useEffect(() => {
     };
 
     const verifiedBodyTemplate = (rowData) => {
-        return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.preSelection, 'text-pink-500 pi-times-circle': !rowData.preSelection })}></i>;
+        return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.preselection, 'text-pink-500 pi-times-circle': !rowData.preselection })}></i>;
     };
     const FinalverifiedBodyTemplate = (rowData) => {
         return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.selected, 'text-pink-500 pi-times-circle': !rowData.selected })}></i>;
