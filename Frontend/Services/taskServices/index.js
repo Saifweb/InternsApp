@@ -17,7 +17,7 @@ export const createTask = async ( name, date,userId) => {
     });
     const data = await response.json();
     console.log(data)
-    if (response.status == "200") {
+    if (response.status === 200 ) {
         return true
     }
     else {
@@ -39,7 +39,7 @@ export const getTasks = async () => {
     });
     const tasks = await response.json();
     console.log(tasks)
-    if (response.status == "200") {
+    if (response.status === 200) {
         return tasks
     }
     else {
@@ -62,7 +62,7 @@ export const deleteTask = async (taskId) => {
     });
     const tasks = await response.json();
     console.log(tasks)
-    if (response.status == "200") {
+    if (response.status === 200) {
         return tasks
     }
     else {

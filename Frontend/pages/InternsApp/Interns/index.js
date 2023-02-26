@@ -68,10 +68,9 @@ const InternsPage = () => {
     };
 
     const addTask = (data) => {
-        console.log("data", data._id)
+        console.log("data", data._id, name)
+        createTask(name, Date(data.date), data._id)
         setDisplayBasic(false)
-        createTask(name, date, data._id)
-
 
     }
 
@@ -262,6 +261,7 @@ const handleSupervisorChange = (e) => {
             return dataviewListItem(data);
 
         } else if (layout === 'grid') {
+            console.log(data);
             return dataviewGridItem(data);
         }
     };
