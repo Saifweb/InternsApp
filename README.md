@@ -28,12 +28,12 @@ npm install
 -Running the project:
 1. Start the backend server:
 open terminal:
-cd ./Frontend/
+cd ./Backend/
 node app.js
 
 2. Start the frontend development server:
 open new terminal:
-cd ./Backend/
+cd ./Frontend/
 npm run dev
 
 3. Open http://localhost:3001 to view it in the browser.
