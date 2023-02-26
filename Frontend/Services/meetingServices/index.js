@@ -19,3 +19,48 @@ export const getMeetings = async () => {
         return false
     }
 };
+
+export const updateMeeting = async (id, title, start, end) => {
+    console.log(end);
+    const link = Api + "/meeting/" + id
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Accesstoken}`
+        },
+        body: JSON.stringify({
+            "title": title,
+            "start": start,
+            "end": end
+        }),
+    });
+    const data = await response.json();
+    console.log(data)
+    if (response.status == "200") {
+        return true
+    }
+    else {
+        return false
+    }
+};
+export const DeleteMeeting = async (id) => {
+    const link = Api + "/meeting/" + id
+    const Accesstoken = localStorage.getItem('AccessToken')
+    const response = await fetch(link, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Accesstoken}`
+        },
+    });
+    const data = await response.json();
+    console.log(data)
+    if (response.status == "200") {
+        return true
+    }
+    else {
+        return false
+    }
+};

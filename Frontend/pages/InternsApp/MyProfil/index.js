@@ -108,7 +108,6 @@ const ProfilPage = () => {
                 setUser(data);
                 if (data.role == "intern") {
                     setIntern(true)
-                    console.log("aaaaaaaa")
                 }
                 setIsUpdated(isUpdated = await false);
             }

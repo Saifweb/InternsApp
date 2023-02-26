@@ -14,7 +14,7 @@ const Create = async (req, res) => {
         })
     }
     else {
-        res.status(400).json('unAutherized')
+        return res.status(400).json('unAutherized')
     }
 }
 
@@ -35,34 +35,42 @@ const getMeetings = (req, res) => {
             .catch(err => { return res.status(400).json({ error: 'Unable to retrieve meetings' }) });
     }
     else {
-        res.status(400).json('unAutherized')
+        return res.status(400).json('unAutherized')
     }
 }
 
 const DeleteMeeting = async (req, res) => {
     if (req.user.role == "supervisor" || req.user.role == "admin") {
-        Meeting.findByIdAndRemove(req.params.meeting_id).then((removedMeeting) => {
+        Meeting.findByIdAndRemove({ _id: req.params.meeting_id }).then((removedMeeting) => {
             return res.status(200).json(removedMeeting);
         })
     }
     else {
-        res.status(400).json('unAutherized')
+        return res.status(400).json('unAutherized')
     }
 }
 
 const updateMeeting = (req, res) => {
-    Meeting.findOne({ _id: req.params.meeting_id }).then(async meeting => {
-        if (meeting) {
-            meeting.start = req.body.start
-            meeting.end = req.body.end
-            meeting.title = req.body.title,
-                user.save().then(res.status(200).json(user)).catch(err => res.status(400).json({ error: err }));
+    if (req.user.role == "admin" || req.user.role == "supervisor") {
+        Meeting.findOne({ _id: req.params.meeting_id }).then(async meeting => {
+            if (meeting) {
+                meeting.start = req.body.start
+                meeting.end = req.body.end
+                meeting.title = req.body.title,
+                    meeting.save().then(() => { return res.status(200).json(meeting) })
+                        .catch(err => { return res.status(400).json({ error: err }) });
+            }
+            else {
+                res.status(400).json('unAutherized')
+            };
         }
-        else {
-            res.status(400).json('unAutherized')
-        };
+        )
     }
-    )
+    else {
+        return res.status(400).json('unAutherized')
+
+    }
+
 }
 
 module.exports = {
