@@ -86,7 +86,10 @@ const InternsPage = () => {
     );
 
     const dataviewListItem = (data) => {
+        const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
+
         return (
+
             <div className="col-12">
                 <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
                     <img src={`${contextPath}/demo/images/intern/${data.image}`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" /> {/* updated image path */}
@@ -96,7 +99,27 @@ const InternsPage = () => {
 
                     </div>
                     <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                        <Button icon="pi pi-plus" />                    
+                        <div className="flex align-items-center justify-content-between">
+
+                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
+                                <div className="card p-fluid">
+                                    <div className="field">
+                                        <label htmlFor="name">Task's name</label>
+                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="deadline">Deadline</label>
+                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
+                                    </div>
+
+                                </div>
+                            </Dialog>
+                            <div className="grid">
+                                <div className="col-12">
+                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => setDisplayBasic(true)} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,7 +127,7 @@ const InternsPage = () => {
     };
 
     const dataviewGridItem = (data) => {
-        const basicDialogFooter = <Button type="button" label="ADD" onClick={()=>addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
+        const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
             <div className="col-12 lg:col-4">
@@ -117,18 +140,18 @@ const InternsPage = () => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
 
-                        <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor:'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
-                        <div className="card p-fluid">
-                    <div className="field">
-                        <label htmlFor="name">Task's name</label>
-                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="deadline">Deadline</label>
-                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
-                    </div>
+                        <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
+                            <div className="card p-fluid">
+                                <div className="field">
+                                    <label htmlFor="name">Task's name</label>
+                                    <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="deadline">Deadline</label>
+                                    <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
+                                </div>
 
-                </div>
+                            </div>
                         </Dialog>
                         <div className="grid">
                             <div className="col-12">
