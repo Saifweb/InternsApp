@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { getTaskData } from '../../../Services/internServices/index..js';
@@ -33,7 +32,6 @@ const ProfilPage = () => {
 
     const [options, setOptions] = useState({});
     const [pieData, setPieData] = useState({});
-    const { layoutConfig } = useContext(LayoutContext);
 
 
 

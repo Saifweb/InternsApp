@@ -8,10 +8,7 @@ import { Calendar } from 'primereact/calendar';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { getAllResume } from '../../../Services/resumeservice/index.js';
 import { updateResume } from '../../../Services/resumeservice/index.js';
-import { downloadAllResumeAsCSV } from '../../../Services/resumeservice/index.js';
 import { Dialog } from 'primereact/dialog';
-
-
 
 
 const ResumesPage = () => {
@@ -27,12 +24,6 @@ const ResumesPage = () => {
 
 
   function downloadFile(resume) {
-    // const link = document.createElement('a');
-    // link.href = resume;
-    // link.setAttribute('download', '');
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
     console.log(resume)
     window.open("http://localhost:3000/" + resume, '_blank');
     window.open(resume, '_blank');
@@ -99,11 +90,6 @@ const ResumesPage = () => {
     const handleScheduleCancel = () => {
       setDisplayBasic(false)
     };
-    // const scheduleDate = () => {
-    //   // Save the selected date and hide the dialog
-    //   setSelectedDate(selectedDate);
-    //   setShowDialog(false);
-    // };
     const handleScheduleClick = () => {
       console.log(id)
       setDisplayBasic(true)
@@ -113,64 +99,6 @@ const ResumesPage = () => {
       setScheduledDate(e.value);
 
     };
-
-
-    // if (rowData.preselection) {
-    //   // If the row is verified
-    //   if (rowData.dateOfInterview == null) {
-    //         <div>
-    //             <Button label="Schedule" onClick={handleScheduleClick} />
-    //             {showPopup && (
-    //             <div className="p-fluid">
-    //                 <Calendar
-    //                 value={scheduledDate}
-    //                 onChange={handleDateSelect}
-    //                 showIcon
-    //                 inputClassName="w-full"
-    //                 dateFormat="mm/dd/yy"
-    //                 placeholder="MM/DD/YYYY"
-    //                 monthNavigator
-    //                 yearNavigator
-    //                 yearRange="2020:2030"
-    //                 />
-    //             </div>
-    //             )}
-    //         </div>
-    //   } else {
-    //     // If the date is scheduled, show the date
-    //     return formatDate(rowData.dateOfInterview);
-    //   }
-    // } else {
-    //   // If the row is not verified
-    //   return "Not Eligible";
-    // }
-
-    // return (
-    //   <Dialog header="Schedule Date" visible={showDialog} onHide={() => setShowDialog(false)}>
-    //     <Calendar value={selectedDate} onChange={(e) => setSelectedDate(e.value)} />
-    //     <Button label="Schedule" onClick={scheduleDate} />
-    //   </Dialog>
-    // );
-    const schedulePopup = (
-      <div className="p-fluid">
-        <Calendar
-          value={scheduledDate}
-          onChange={(e) => { setSelectedDate(e.target.value) }}
-          showIcon
-          inputClassName="w-full"
-          dateFormat="mm/dd/yy"
-          placeholder="MM/DD/YYYY"
-          monthNavigator
-          yearNavigator
-          yearRange="2020:2030"
-        />
-        <div className="mt-4 flex justify-end">
-          <Button label="Cancel" onClick={handleScheduleCancel} className="mr-4" />
-          <Button label="Save" onClick={handleScheduleSave} />
-        </div>
-      </div>
-    );
-
     if (rowData.preSelection) {
       // If the row is verified
       if (rowData.dateOfInterview == null) {

@@ -32,7 +32,7 @@ const getInterns = (req, res) => {
             .then(users => res.status(200).json(users))
             .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
     }
-    else if (req.user.role == "admin") {
+    else if (req.user.role == "admin" || req.user.role == "intern") {
         User.find({ role: "intern" })
             .then(users => { return res.status(200).json(users) })
             .catch(err => { return res.status(400).json("Unable") })
@@ -77,14 +77,14 @@ const getUsersNumber = (req, res) => {
                 }
             }
         ])
-        .then(results => {
-            const userCountByRole = {};
-            results.forEach(result => {
-                userCountByRole[result._id] = result.count;
-            });
-            res.json(userCountByRole);
-        })
-        .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
+            .then(results => {
+                const userCountByRole = {};
+                results.forEach(result => {
+                    userCountByRole[result._id] = result.count;
+                });
+                res.json(userCountByRole);
+            })
+            .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
     }
     else {
         res.status(400).json('unAuthorized')
@@ -205,5 +205,5 @@ const ConnectedUser = (req, res) => {
 
 }
 module.exports = {
-    createUser,getUsersNumber, getTaskNumbers, getAllUsers, getInterns, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword
+    createUser, getUsersNumber, getTaskNumbers, getAllUsers, getInterns, getUserById, updateUser, deleteUser, ConnectedUser, superUpdateUser, assignAsupervioserToIntern, updatePassword
 }

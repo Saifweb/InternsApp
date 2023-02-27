@@ -87,23 +87,6 @@ const Delete = async (req, res) => {
     }
 }
 
-const getInterns = async (req, res) => {
-    if (req.user.role == "supervisor") {
-        User.find({ supervisor_id: req.user.id })
-            .then(users => res.status(200).json(users))
-            .catch(err => res.status(400).json({ error: 'Unable to retrieve users' }));
-    }
-    else if (req.user.role == "admin") {
-        User.find({ role: "intern" })
-            .then(users => { return res.status(200).json(users) })
-            .catch(err => { return res.status(400).json("Unable") })
-    }
-    else {
-        res.status(400).json('unAutherized')
-    }
-}
-
-
 module.exports = {
-    Create, Delete, Index, Update, getInterns
+    Create, Delete, Index, Update
 }

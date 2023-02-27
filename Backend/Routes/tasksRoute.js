@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Create, Index, Update, Delete ,getInterns } = require('../Controllers/tasksControllers');
+const { Create, Index, Update, Delete } = require('../Controllers/tasksControllers');
 const { authenticateToken } = require('../middlewares/auth');
 
 //Example of route
@@ -11,10 +11,9 @@ const { authenticateToken } = require('../middlewares/auth');
 router.get('/tasks', authenticateToken, Index),
     router.post('/task', authenticateToken, Create),
     router.patch('/task/:id', authenticateToken, Update),
-    router.get('/users', authenticateToken, getInterns),
     // router.patch('/updateTask/:id', authenticateToken, Update);
 
-    
+
 
     router.delete('/task/:id', authenticateToken, Delete),
 
