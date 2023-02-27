@@ -117,7 +117,7 @@ const InternsPage = () => {
 
             <div className="col-12">
                 <div className="flex flex-column md:flex-row align-items-center p-3 w-full">
-                    <img src={`${contextPath}/demo/images/intern/${data.image}`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" /> {/* updated image path */}
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" /> {/* updated image path */}
                     <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
                         <div className="font-bold text-2xl" label='InernName'>{data.name}</div>
                         <div className="mb-2" label='InternEmail'>{data.email}</div>
@@ -142,38 +142,21 @@ const InternsPage = () => {
                                     <Button label="ADD" icon="pi pi-check" type="submit" className="p-button-secondary" />
                                 </form>
                             </Dialog>
-                            <div className="grid">
-                                <div className="col-12">
-                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => beforeCreateTask(data._id)} />
-                                </div>
-                            </div>
                         </div>
                     </div>
                     {/* add supervisor */}
-                    <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                        <div className="flex align-items-center justify-content-between">
-
-                            <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
-                                <div className="card p-fluid">
-                                    {/* <div className="field">
-                                        <label htmlFor="name">Supervisor's name</label>
-                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
-                                    </div>
-                                    <div className="field">
-                                        <label htmlFor="deadline">Supervisor's email</label>
-                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
-                                    </div> */}
-                                    <div className="field">
-                                        <label htmlFor="supervisor-dropdown">Select Supervisor</label>
-                                        <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
-                                    </div>
-                                </div>
-                            </Dialog>
-                            <div className="grid">
-                                <div className="col-12">
-                                    <Button type="button" label="Add Supervisor" icon="pi pi-plus" onClick={() => setDisplayBasic1(true)} />
-                                </div>
+                    <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
+                        <div className="card p-fluid">
+                            <div className="field">
+                                <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
                             </div>
+                        </div>
+                    </Dialog>
+                    <div className="flex justify-between">
+                        <div className="col-12">
+                            <Button type="button" label="Super" icon="pi pi-plus" className=" p-button w-1/2 mr-2 " onClick={() => setDisplayBasic1(true)} />
+                            <Button type="button" label="Task" icon="pi pi-plus" className='p-button' onClick={() => beforeCreateTask(data._id)} />
                         </div>
                     </div>
                 </div>
@@ -190,7 +173,7 @@ const InternsPage = () => {
                 <div className="card m-3 border-1 surface-border">
 
                     <div className="flex flex-column align-items-center text-center mb-3">
-                        <img src={`${contextPath}/demo/images/product/${data.image}`} alt={data.name} className="w-9 shadow-2 my-3 mx-0" />
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt={data.name} className="w-9 shadow-2 my-3 mx-0" />
                         <div className="text-2xl font-bold" label='NameOfIntern'>{data.name}</div>
                         <div className="mb-3" label='EmailOfIntern'>{data.email}</div>
                     </div>
@@ -214,39 +197,22 @@ const InternsPage = () => {
                                 </form>
                             </Dialog>
                             <div className="grid">
-                                <div className="col-12">
-                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => beforeCreateTask(data._id)} />
+                                <div className="flex justify-between">
+                                    <Button type="button" label="Task" icon="pi pi-plus" className="p-button w-1/2 mr-2" onClick={() => beforeCreateTask(data._id)} />
+                                    <Button type="button" label="Super" icon="pi pi-plus" className="p-button w-1/2" onClick={() => setDisplayBasic1(true)} />
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* add supervisor */}
-                    <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                        <div className="flex align-items-center justify-content-between">
-
-                            <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
-                                <div className="card p-fluid">
-                                    {/* <div className="field">
-                                        <label htmlFor="name">Supervisor's name</label>
-                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
-                                    </div>
-                                    <div className="field">
-                                        <label htmlFor="deadline">Supervisor's email</label>
-                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
-                                    </div> */}
-                                    <div className="field">
-                                        <label htmlFor="supervisor-dropdown">Select Supervisor</label>
-                                        <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
-                                    </div>
-                                </div>
-                            </Dialog>
-                            <div className="grid">
-                                <div className="col-12">
-                                    <Button type="button" label="Add Supervisor" icon="pi pi-plus" onClick={() => setDisplayBasic1(true)} />
-                                </div>
+                    <Dialog header="ADD Supervisor" visible={displayBasic1} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter1} onHide={() => setDisplayBasic1(false)}>
+                        <div className="card p-fluid">
+                            <div className="field">
+                                <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
                             </div>
                         </div>
-                    </div>
+                    </Dialog>
                 </div>
             </div>
         );
