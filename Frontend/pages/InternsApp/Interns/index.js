@@ -14,11 +14,10 @@ import getConfig from 'next/config';
 
 const InternsPage = () => {
     const [name, setName] = useState('');
+    const [internId, setInternId] = useState('');
     const [date, setDate] = useState('');
     const [displayBasic, setDisplayBasic] = useState(false);
     const [displayBasic1, setDisplayBasic1] = useState(false);
-
-
     const [dataViewValue, setDataViewValue] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filteredValue, setFilteredValue] = useState(null);
@@ -67,13 +66,13 @@ const InternsPage = () => {
         }
     };
 
-    const addTask = (data) => {
-        console.log("data", data._id, name)
-        createTask(name, Date(data.date), data._id)
+    async function addTask(event) {
+        event.preventDefault();
+        //console.log("this ya wasssim our data ", internId, name, date)
+        //console.log("data", data._id, name)
+        createTask(name, date, internId)
         setDisplayBasic(false)
-
     }
-
 
     const dataViewHeader = (
         <div className="flex flex-column md:flex-row md:justify-content-between gap-2">
@@ -90,6 +89,10 @@ const InternsPage = () => {
 
         setDisplayBasic1(false)
 
+    }
+    async function beforeCreateTask(id) {
+        setInternId(id);
+        setDisplayBasic(true)
     }
 
     const [supervisorOptions, setSupervisorOptions] = useState([]);
@@ -108,8 +111,6 @@ const InternsPage = () => {
         setSelectedSupervisor(e.value);
     };
     const dataviewListItem = (data) => {
-        const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
-
         const basicDialogFooter1 = <Button type="button" label="ADD" onClick={() => addSupervisor(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
@@ -125,23 +126,25 @@ const InternsPage = () => {
                     {/* add task */}
                     <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
                         <div className="flex align-items-center justify-content-between">
+                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal onHide={() => setDisplayBasic(false)}>
+                                <form onSubmit={addTask}>
+                                    <div className="card p-fluid">
+                                        <div className="field">
+                                            <label htmlFor="name">Task's name</label>
+                                            <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                        </div>
+                                        <div className="field">
+                                            <label htmlFor="deadline">Deadline</label>
+                                            <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
+                                        </div>
 
-                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
-                                <div className="card p-fluid">
-                                    <div className="field">
-                                        <label htmlFor="name">Task's name</label>
-                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
                                     </div>
-                                    <div className="field">
-                                        <label htmlFor="deadline">Deadline</label>
-                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
-                                    </div>
-
-                                </div>
+                                    <Button label="ADD" icon="pi pi-check" type="submit" className="p-button-secondary" />
+                                </form>
                             </Dialog>
                             <div className="grid">
                                 <div className="col-12">
-                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => setDisplayBasic(true)} />
+                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => beforeCreateTask(data._id)} />
                                 </div>
                             </div>
                         </div>
@@ -179,7 +182,7 @@ const InternsPage = () => {
     };
 
     const dataviewGridItem = (data) => {
-        const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
+        const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask()} icon="pi pi-check" className="p-button-secondary" />;
         const basicDialogFooter1 = <Button type="button" label="ADD" onClick={() => addSupervisor(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
@@ -194,23 +197,25 @@ const InternsPage = () => {
                     {/* add task */}
                     <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
                         <div className="flex align-items-center justify-content-between">
+                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal onHide={() => setDisplayBasic(false)}>
+                                <form onSubmit={addTask}>
+                                    <div className="card p-fluid">
+                                        <div className="field">
+                                            <label htmlFor="name">Task's name</label>
+                                            <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
+                                        </div>
+                                        <div className="field">
+                                            <label htmlFor="deadline">Deadline</label>
+                                            <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
+                                        </div>
 
-                            <Dialog header="ADD Task" visible={displayBasic} style={{ width: '30vw', backgroundColor: 'transparent' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
-                                <div className="card p-fluid">
-                                    <div className="field">
-                                        <label htmlFor="name">Task's name</label>
-                                        <InputText onChange={(e) => setName(e.target.value)} id="name'" type="text" />
                                     </div>
-                                    <div className="field">
-                                        <label htmlFor="deadline">Deadline</label>
-                                        <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="date" />
-                                    </div>
-
-                                </div>
+                                    <Button label="ADD" icon="pi pi-check" type="submit" className="p-button-secondary" />
+                                </form>
                             </Dialog>
                             <div className="grid">
                                 <div className="col-12">
-                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => setDisplayBasic(true)} />
+                                    <Button type="button" label="Add Task" icon="pi pi-plus" onClick={() => beforeCreateTask(data._id)} />
                                 </div>
                             </div>
                         </div>
@@ -254,11 +259,11 @@ const InternsPage = () => {
         }
 
         if (layout === 'list') {
-            console.log(data);
+            //console.log(data);
             return dataviewListItem(data);
 
         } else if (layout === 'grid') {
-            console.log(data);
+            //console.log(data);
             return dataviewGridItem(data);
         }
     };
