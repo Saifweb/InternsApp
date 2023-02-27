@@ -50,7 +50,7 @@ const AppTopbar = forwardRef((props, ref) => {
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
     const button = <a onClick={() => setDisplayBasic(true)}>Add Account</a>
     const logoutButton = <a onClick={logout}>Logout</a>
-    if (Role != "intern") {
+    if (Role == "admin") {
         overlayMenuItems = [
             {
                 label: button,
