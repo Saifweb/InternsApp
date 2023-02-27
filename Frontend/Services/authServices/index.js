@@ -14,6 +14,7 @@ export const login = async (email, password) => {
     if (response.status == "200") {
         localStorage.setItem('AccessToken', data.AccessToken);
         localStorage.setItem('RefreshToken', data.RefreshToken);
+        localStorage.setItem('Role', data.Role);
         window.location.href = '/InternsApp/Dashboard/';
         return true
     }
@@ -25,6 +26,7 @@ export const logout = async () => {
     console.log("hello??")
     localStorage.removeItem('AccessToken');
     localStorage.removeItem('RefreshToken');
+    localStorage.removeItem('Role');
     window.location.href = '/';
 }
 

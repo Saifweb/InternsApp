@@ -15,6 +15,12 @@ import { logout } from '../Services/authServices/index'
 import { createUser } from '../Services/userServices/index'
 import { Toast } from 'primereact/toast';
 
+var Role = ""
+var overlayMenuItems = [];
+if (typeof window !== 'undefined') {
+    // Perform localStorage action
+    Role = localStorage.getItem('Role')
+}
 const AppTopbar = forwardRef((props, ref) => {
     //form to create User:
     const [block, setBlock] = useState('');
@@ -44,6 +50,29 @@ const AppTopbar = forwardRef((props, ref) => {
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
     const button = <a onClick={() => setDisplayBasic(true)}>Add Account</a>
     const logoutButton = <a onClick={logout}>Logout</a>
+    if (Role != "intern") {
+        overlayMenuItems = [
+            {
+                label: button,
+                icon: 'pi pi-refresh',
+            },
+            {
+                separator: true
+            },
+            {
+                label: logoutButton,
+                icon: 'pi pi-sign-out'
+            }
+        ];
+    }
+    else {
+        overlayMenuItems = [
+            {
+                label: logoutButton,
+                icon: 'pi pi-sign-out'
+            }
+        ];
+    }
 
 
     const dropdownValues = [
@@ -52,19 +81,7 @@ const AppTopbar = forwardRef((props, ref) => {
         { name: 'intern', code: 'intern' },
         { name: 'supervisor', code: 'supervisor' },
     ];
-    const overlayMenuItems = [
-        {
-            label: button,
-            icon: 'pi pi-refresh',
-        },
-        {
-            separator: true
-        },
-        {
-            label: logoutButton,
-            icon: 'pi pi-sign-out'
-        }
-    ];
+
 
     const toggleMenu = (event) => {
         menu.current.toggle(event);

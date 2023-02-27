@@ -92,24 +92,24 @@ const InternsPage = () => {
 
     }
 
-const [supervisorOptions, setSupervisorOptions] = useState([]);
+    const [supervisorOptions, setSupervisorOptions] = useState([]);
 
 
-// Define options for supervisors dropdown
-const supervisorList = [
-  { label: 'zied', value: 'zied' },
-  { label: 'Seifeddine ben hamida', value: 'Seifeddine ben hamida' },
-  { label: 'si akrem', value: 'si akrem' }
-];
-const [selectedSupervisor, setSelectedSupervisor] = useState(null);
+    // Define options for supervisors dropdown
+    const supervisorList = [
+        { label: 'zied', value: 'zied' },
+        { label: 'Seifeddine ben hamida', value: 'Seifeddine ben hamida' },
+        { label: 'si akrem', value: 'si akrem' }
+    ];
+    const [selectedSupervisor, setSelectedSupervisor] = useState(null);
 
-// Function to handle selecting a supervisor from dropdown
-const handleSupervisorChange = (e) => {
-  setSelectedSupervisor(e.value);
-};
+    // Function to handle selecting a supervisor from dropdown
+    const handleSupervisorChange = (e) => {
+        setSelectedSupervisor(e.value);
+    };
     const dataviewListItem = (data) => {
         const basicDialogFooter = <Button type="button" label="ADD" onClick={() => addTask(data)} icon="pi pi-check" className="p-button-secondary" />;
-        
+
         const basicDialogFooter1 = <Button type="button" label="ADD" onClick={() => addSupervisor(data)} icon="pi pi-check" className="p-button-secondary" />;
 
         return (
@@ -161,8 +161,8 @@ const handleSupervisorChange = (e) => {
                                         <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
                                     </div> */}
                                     <div className="field">
-                                    <label htmlFor="supervisor-dropdown">Select Supervisor</label>
-                                    <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
+                                        <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                        <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
                                     </div>
                                 </div>
                             </Dialog>
@@ -230,8 +230,8 @@ const handleSupervisorChange = (e) => {
                                         <InputText onChange={(e) => setDate(Date(e.target.value))} id="block" type="text" />
                                     </div> */}
                                     <div className="field">
-                                    <label htmlFor="supervisor-dropdown">Select Supervisor</label>
-                                    <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
+                                        <label htmlFor="supervisor-dropdown">Select Supervisor</label>
+                                        <Dropdown id="supervisor-dropdown" value={selectedSupervisor} options={supervisorList} onChange={handleSupervisorChange} placeholder="Select a supervisor" />
                                     </div>
                                 </div>
                             </Dialog>
@@ -250,14 +250,11 @@ const handleSupervisorChange = (e) => {
 
     const itemTemplate = (data, layout) => {
         if (!data) {
-            console.log('hhhhhhhh');
-
             return;
         }
 
         if (layout === 'list') {
             console.log(data);
-
             return dataviewListItem(data);
 
         } else if (layout === 'grid') {

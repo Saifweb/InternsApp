@@ -12,7 +12,18 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { getInterns } from '../../../Services/internServices/index.';
 import { Toast } from 'primereact/toast';
-
+var Role = ""
+var isNotIntern = false;
+if (typeof window !== 'undefined') {
+    // Perform localStorage action
+    Role = localStorage.getItem('Role')
+    if (Role != "intern") {
+        isNotIntern = true;
+    }
+    else {
+        isNotIntern = false;
+    }
+}
 const CalendarPage = () => {
     const [meetings, setMeetings] = useState([]);
     const [interns, setInterns] = useState([]);
@@ -146,7 +157,7 @@ const CalendarPage = () => {
             <FullCalendar
                 initialView="dayGridMonth"
                 plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-                selectable={true}
+                selectable={isNotIntern}
                 select={info => {
                     setSelectedStart(info.startStr)
                     setEnd(info.startStr)
@@ -198,12 +209,10 @@ const CalendarPage = () => {
                             />
                         </div>
                         <div className="flex justify-between">
-                            <Button label="Delete Meeting" onClick={deleteMeet} className=" p-button-danger w-1/2 mr-2 "></Button>
-                            <Button label="Update Meeting" type="submit" className="p-button w-1/2" ></Button>
+                            {(Role == "admin" || Role == "supervisor") && <Button label="Delete Meeting" onClick={deleteMeet} className=" p-button-danger w-1/2 mr-2 "></Button>}
+                            {(Role == "admin" || Role == "supervisor") && <Button label="Update Meeting" type="submit" className="p-button w-1/2" ></Button>}
                         </div>
-
                     </form>
-
                     </div>
 
                     }

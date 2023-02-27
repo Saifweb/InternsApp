@@ -9,8 +9,15 @@ import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { getAllResume } from '../../../Services/resumeservice/index.js';
 import { updateResume } from '../../../Services/resumeservice/index.js';
 import { Dialog } from 'primereact/dialog';
+import AccessDeniedPage from '../../auth/access/index.js';
+import getConfig from 'next/config';
 
+var Role = ""
 
+if (typeof window !== 'undefined') {
+  // Perform localStorage action
+  Role = localStorage.getItem('Role')
+}
 const ResumesPage = () => {
   const [positions, setPositions] = useState([]);
   const [resumes, setResumes] = useState([]);
@@ -21,6 +28,7 @@ const ResumesPage = () => {
   const [scheduledDate, setScheduledDate] = useState(null);
   const [updated, setUpdated] = useState(false);
 
+  const contextPath = getConfig().publicRuntimeConfig.contextPath;
 
 
   function downloadFile(resume) {
@@ -158,70 +166,81 @@ const ResumesPage = () => {
 
 
   return (
-    <div className="grid">
-      <div className="col-12">
-        <div className="card">
-          <h5>Filter Menu</h5>
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            <DataTable
-              value={resumes}
-              paginator
-              className="p-datatable-gridlines"
-              showGridlines
-              rows={10}
-              dataKey="id"
-              loading={isLoading}
-              responsiveLayout="scroll"
-              emptyMessage="No resumes found."
+    <>
+      {(Role == "admin" || Role == "supervisor") && <div className="grid">
+        <div className="col-12">
+          <div className="card">
+            <h5>Filter Menu</h5>
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <DataTable
+                value={resumes}
+                paginator
+                className="p-datatable-gridlines"
+                showGridlines
+                rows={10}
+                dataKey="id"
+                loading={isLoading}
+                responsiveLayout="scroll"
+                emptyMessage="No resumes found."
 
-            >
+              >
 
-              <Column header="Email" filterField="Email" style={{ minWidth: '10rem' }} body={EmailBodyTemplate} />
-              <Column field="Position" header="Position" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-              <Column header="Date of interview" filterField="date" dataType="date" style={{ minWidth: '8rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-              <Column field="Pre-Selection" header="Pre-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
-              <Column field="Final-Selection" header="Final-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={FinalverifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
-              <Column field="Resume" header="Resume" bodyClassName="text-center" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={downloadBodyTemplate} />
+                <Column header="Email" filterField="Email" style={{ minWidth: '10rem' }} body={EmailBodyTemplate} />
+                <Column field="Position" header="Position" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                <Column header="Date of interview" filterField="date" dataType="date" style={{ minWidth: '8rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
+                <Column field="Pre-Selection" header="Pre-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
+                <Column field="Final-Selection" header="Final-Selection" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={FinalverifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
+                <Column field="Resume" header="Resume" bodyClassName="text-center" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '5rem' }} body={downloadBodyTemplate} />
 
-            </DataTable>
+              </DataTable>
 
-          )}
-          <Dialog header="Meeting Info" visible={displayBasic} style={{ width: '30vw' }} modal onHide={() => setDisplayBasic(false)}>
-            <div className="card p-fluid">
-              {<div><form onSubmit={handleScheduleSave}>
-                <div className="field">
-                  <Calendar
-                    value={date}
-                    onChange={(e) => { setDate(e.target.value) }}
-                    showIcon
-                    inputClassName="w-full"
-                    dateFormat="mm/dd/yy"
-                    placeholder="MM/DD/YYYY"
-                    monthNavigator
-                    yearNavigator
-                    yearRange="2020:2030"
-                  />
+            )}
+            <Dialog header="Meeting Info" visible={displayBasic} style={{ width: '30vw' }} modal onHide={() => setDisplayBasic(false)}>
+              <div className="card p-fluid">
+                {<div><form onSubmit={handleScheduleSave}>
+                  <div className="field">
+                    <Calendar
+                      value={date}
+                      onChange={(e) => { setDate(e.target.value) }}
+                      showIcon
+                      inputClassName="w-full"
+                      dateFormat="mm/dd/yy"
+                      placeholder="MM/DD/YYYY"
+                      monthNavigator
+                      yearNavigator
+                      yearRange="2020:2030"
+                    />
+                  </div>
+                  <div className="flex justify-between">
+                    <Button label="Update" type="submit" className="p-button w-1/2" ></Button>
+                  </div>
+
+                </form>
+
                 </div>
-                <div className="flex justify-between">
-                  <Button label="Update" type="submit" className="p-button w-1/2" ></Button>
-                </div>
 
-              </form>
-
+                }
               </div>
+            </Dialog>
+          </div>
+        </div>
+      </div>}
 
-              }
-            </div>
-          </Dialog>
+      {Role == "intern" && <div className="grid text-center items-center justify-center">
+        <div className="col-12">
+          <div className="card w-1/3 p-6">
+            <h1 className="text-900 font-bold text-5xl mb-2">Access Denied</h1>
+            <div className="text-600 mb-5">You do not have the necessary permissions.</div>
+            <img src={`${contextPath}/demo/images/access/asset-access.svg`} alt="Error" className="w-1/2 mx-auto mb-5" />
+          </div>
         </div>
       </div>
+      }
 
+    </>
 
-
-
-    </div>
   );
 };
 

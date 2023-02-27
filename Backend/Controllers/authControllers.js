@@ -30,7 +30,7 @@ const login = (req, res) => {
                     RefreshToken: RefreshToken
                 }
                 User.findOneAndUpdate({ email: email }, User_token, { new: true })
-                    .then(res.status(200).json({ AccessToken: AccessToken, RefreshToken: RefreshToken }))
+                    .then(res.status(200).json({ AccessToken: AccessToken, RefreshToken: RefreshToken, Role: user.role }))
                     .catch(err => res.status(400).json({ error: 'Unable to update user' }));
             });
         })

@@ -98,7 +98,9 @@ const Dashboard = () => {
 
                     </div>
                 </div>
-                <div className="col-12 lg:col-6 xl:col-12">
+            </div>
+            <div className="col-12 lg:col-6 xl:col-12">
+                <div className="flex-1 min-w-0">
                     <CalendarPage />
                 </div>
             </div>
