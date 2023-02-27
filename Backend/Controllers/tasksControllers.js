@@ -62,7 +62,7 @@ const Update = async (req, res) => {
         });
     }
     else if (req.user.role == "intern") {
-        Task.findOne({ _id: req.params.id, userId: req.user.id }, { $set: { name: req.body.name, userId: req.body.userId, date: req.body.date } },
+        Task.findOne({ _id: req.params.id, userId: req.user.id },
             { new: true }).then(task => {
                 task.completed = req.body.completed;
                 task.save().then(savedTask => {
